@@ -1,9 +1,11 @@
 package com.demo.blog.domain.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@AttributeOverride(name="id", column = @Column(name="article_id"))
 public class Article extends BaseEntity{
 
     private String title;
@@ -16,9 +18,10 @@ public class Article extends BaseEntity{
 
     private int favoritesCount;
 
-    @Embedded
-    private Profile author;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User favoriter;
+    @OneToMany(mappedBy = "article")
+    private List<ArticleUser> favoriters = new ArrayList<>();
 }

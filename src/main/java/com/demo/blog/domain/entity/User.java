@@ -1,9 +1,15 @@
 package com.demo.blog.domain.entity;
 
+import com.demo.blog.domain.model.UserRequestDto;
+import com.demo.blog.domain.model.UserResponseDto;
+import lombok.Builder;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@AttributeOverride(name = "id", column = @Column(name = "user_id"))
 public class User extends BaseEntity {
 
     private String userName;
@@ -18,6 +24,80 @@ public class User extends BaseEntity {
 
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User following;
+    @OneToMany(mappedBy = "following")
+    private List<FollowerFollowing> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower")
+    private List<FollowerFollowing> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ArticleUser> articles = new ArrayList<>();
+
+    public UserResponseDto toDto(){
+        UserResponseDto userResponseDto =
+                new Builder(this.userName)
+                        .setEmail(this.email)
+                        .setBio(this.bio)
+                        .setImage(this.image)
+                        .setToken(this.token)
+                        .build();
+        return userResponseDto;
+    }
+
+    public void update(UserRequestDto userRequestDto) {
+        if(userRequestDto.getUserName() != null){
+            this.userName = userRequestDto.getUserName();
+        }
+        if(userRequestDto.getEmail() != null){
+            this.email = userRequestDto.getEmail();
+        }
+        if(userRequestDto.getBio() != null){
+            this.bio = userRequestDto.getBio();
+        }
+        if(userRequestDto.getImage() != null){
+            this.image = userRequestDto.getImage();
+        }
+    }
+
+    public static class Builder{
+        private String email;
+        private String token;
+        private String userName;
+        private String bio;
+        private String image;
+
+        public Builder(String userName){
+            this.userName = userName;
+        }
+
+        public Builder setEmail(String email){
+            this.email = email;
+            return this;
+        }
+
+        public Builder setToken(String token){
+            this.token = token;
+            return this;
+        }
+
+        public Builder setBio(String bio){
+            this.bio = bio;
+            return this;
+        }
+
+        public Builder setImage(String image){
+            this.image = image;
+            return this;
+        }
+
+        public UserResponseDto build(){
+            UserResponseDto userResponseDto = new UserResponseDto();
+            userResponseDto.setUserName(userName);
+            userResponseDto.setEmail(email);
+            userResponseDto.setToken(token);
+            userResponseDto.setBio(bio);
+            userResponseDto.setImage(image);
+            return userResponseDto;
+        }
+    }
 }
