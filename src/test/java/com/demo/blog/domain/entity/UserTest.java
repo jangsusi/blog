@@ -1,33 +1,26 @@
-package com.demo.blog;
+package com.demo.blog.domain.entity;
 
-import com.demo.blog.domain.entity.User;
 import com.demo.blog.domain.model.UserResponseDto;
-import com.demo.blog.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BlogApplicationTests {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Autowired
-    public UserService userService;
+class UserTest {
 
     @Test
-	void user_api() {
+    void response_model_wrapping(){
         //given
-        User user  = new User.Builder("sl")
-                            .setBio("bio")
-                            .setEmail("email")
-                            .setToken("token")
-                            .setImage("image")
-                            .setPassword("password")
-                            .build();
+        UserResponseDto user  = new UserResponseDto();
+        user.setBio("bio");
+        user.setEmail("email");
+        user.setImage("image");
+        user.setToken("token");
+        user.setUserName("username");
 
         //when
         String result = "";
@@ -41,6 +34,5 @@ class BlogApplicationTests {
 
         //then
         Assertions.assertNotEquals(result, "");
-	}
-
+    }
 }

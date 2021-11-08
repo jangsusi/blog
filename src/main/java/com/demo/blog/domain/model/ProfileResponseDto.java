@@ -6,13 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Profile {
+@JsonRootName(value = "profile")
+public class ProfileResponseDto {
 
     private String userName;
-
     private String bio;
-
     private String image;
-
     private boolean following;
 }

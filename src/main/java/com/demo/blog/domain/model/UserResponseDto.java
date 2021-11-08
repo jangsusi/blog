@@ -1,8 +1,12 @@
 package com.demo.blog.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Getter
+@JsonRootName(value = "user")
 public class UserResponseDto {
 
     private String email;

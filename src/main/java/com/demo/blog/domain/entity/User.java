@@ -2,7 +2,10 @@ package com.demo.blog.domain.entity;
 
 import com.demo.blog.domain.model.UserRequestDto;
 import com.demo.blog.domain.model.UserResponseDto;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.List;
 
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     private String userName;
@@ -34,14 +39,15 @@ public class User extends BaseEntity {
     private List<ArticleUser> articles = new ArrayList<>();
 
     public UserResponseDto toDto(){
-        UserResponseDto userResponseDto =
-                new Builder(this.userName)
-                        .setEmail(this.email)
-                        .setBio(this.bio)
-                        .setImage(this.image)
-                        .setToken(this.token)
-                        .build();
-        return userResponseDto;
+        return new UserResponseDto();
+//        UserResponseDto userResponseDto =
+//                new Builder(this.userName)
+//                        .setEmail(this.email)
+//                        .setBio(this.bio)
+//                        .setImage(this.image)
+//                        .setToken(this.token)
+//                        .build();
+//        return userResponseDto;
     }
 
     public void update(UserRequestDto userRequestDto) {
@@ -65,6 +71,7 @@ public class User extends BaseEntity {
         private String userName;
         private String bio;
         private String image;
+        private String password;
 
         public Builder(String userName){
             this.userName = userName;
@@ -90,14 +97,13 @@ public class User extends BaseEntity {
             return this;
         }
 
-        public UserResponseDto build(){
-            UserResponseDto userResponseDto = new UserResponseDto();
-            userResponseDto.setUserName(userName);
-            userResponseDto.setEmail(email);
-            userResponseDto.setToken(token);
-            userResponseDto.setBio(bio);
-            userResponseDto.setImage(image);
-            return userResponseDto;
+        public Builder setPassword(String password){
+            this.password = password;
+            return this;
+        }
+
+        public User build(){
+            return new User(userName, email, bio, image, token, password,  new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
     }
 }
