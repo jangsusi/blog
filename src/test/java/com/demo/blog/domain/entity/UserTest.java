@@ -1,6 +1,7 @@
 package com.demo.blog.domain.entity;
 
 import com.demo.blog.domain.model.UserResponseDto;
+import com.demo.blog.util.ResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -23,14 +24,7 @@ class UserTest {
         user.setUserName("username");
 
         //when
-        String result = "";
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-        try {
-            result = mapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            result = "";
-        }
+        String result = ResponseModel.asJson(user);
 
         //then
         Assertions.assertNotEquals(result, "");
