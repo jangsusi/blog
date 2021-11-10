@@ -21,12 +21,13 @@ public class UserController {
 
     @GetMapping(path ="/user")
     @Transactional(readOnly = true)
-    public String getCurrentUser(Session session) {
-        UserResponseDto response = userService.getUser(session.getId());
-        return ResponseModel.asJson(response);
+    public String getCurrentUser() {
+//        UserResponseDto response = userService.getUser(session.getId());
+        return "";
+//        return ResponseModel.asJson(response);
     }
 
-    @PostMapping(path ="/user")
+    @PostMapping(path ="/user/login")
     @Transactional
     public void updateUser(Session session, UserRequestDto userRequestDto) {
         userService.updateUser(session.getId(), userRequestDto);
