@@ -23,7 +23,7 @@ public class UserController {
     @Transactional(readOnly = true)
     public String getCurrentUser() {
 //        UserResponseDto response = userService.getUser(session.getId());
-        return "";
+        return "/error/404";
 //        return ResponseModel.asJson(response);
     }
 
