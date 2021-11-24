@@ -1,5 +1,6 @@
 package com.demo.blog.security;
 
+import com.demo.blog.domain.model.UserRequestDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +14,7 @@ import java.util.Objects;
 public class JWTToken {
     private static String key = "soobin";
 
-    public static String makeToken(){
+    public static String makeToken(UserRequestDto userRequestDto){
 
         //Header
         Map<String, Object> headers = new HashMap<>();
@@ -22,7 +23,9 @@ public class JWTToken {
 
         //payload
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put("data", "First");
+        payloads.put("username", userRequestDto.getUserName());
+        payloads.put("email", userRequestDto.getEmail());
+        payloads.put("password", userRequestDto.getPassword());
 
         Long expiredTime = 1000 * 60L * 60L * 2L; //2hours
 
@@ -33,7 +36,7 @@ public class JWTToken {
         String jwt = Jwts.builder()
                 .setHeader(headers)
                 .setClaims(payloads)
-                .setSubject("user") //token용도
+                .setSubject("userinfo") //token용도
                 .setExpiration(ext)
                 .signWith(SignatureAlgorithm.HS256, key.getBytes())
                 .compact();

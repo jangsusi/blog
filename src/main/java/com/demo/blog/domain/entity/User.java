@@ -5,6 +5,7 @@ import com.demo.blog.domain.model.UserResponseDto;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class User extends BaseEntity {
 
     private String userName;
@@ -38,16 +40,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<ArticleUser> articles = new ArrayList<>();
 
-    public UserResponseDto toDto(){
-        return new UserResponseDto();
-//        UserResponseDto userResponseDto =
-//                new Builder(this.userName)
-//                        .setEmail(this.email)
-//                        .setBio(this.bio)
-//                        .setImage(this.image)
-//                        .setToken(this.token)
-//                        .build();
-//        return userResponseDto;
+    public User(UserRequestDto userRequestDto, String token) {
+        this.userName = userRequestDto.getUserName();
+        this.email = userRequestDto.getEmail();
+        this.password = userRequestDto.getPassword();
+        this.token = token;
     }
 
     public void update(UserRequestDto userRequestDto) {
@@ -62,6 +59,9 @@ public class User extends BaseEntity {
         }
         if(userRequestDto.getImage() != null){
             this.image = userRequestDto.getImage();
+        }
+        if(userRequestDto.getBio() != null){
+            this.bio = userRequestDto.getBio();
         }
     }
 

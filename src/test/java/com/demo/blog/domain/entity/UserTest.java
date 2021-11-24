@@ -1,14 +1,15 @@
 package com.demo.blog.domain.entity;
 
 import com.demo.blog.controller.UserController;
+import com.demo.blog.domain.model.UserRequestDto;
 import com.demo.blog.domain.model.UserResponseDto;
+import com.demo.blog.service.UserService;
 import com.demo.blog.util.ResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.h2.engine.Procedure;
 import org.h2.engine.Session;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,18 +24,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.Cookie;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
     @Autowired
     public UserController userController;
 
+    @Autowired
+    public UserService userService;
+
     protected MockMvc mockMvc;
 
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @Before
     void setUp(){
         System.out.println("df");
 //        mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
