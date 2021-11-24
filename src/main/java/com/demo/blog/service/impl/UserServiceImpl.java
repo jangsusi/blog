@@ -3,7 +3,6 @@ package com.demo.blog.service.impl;
 import com.demo.blog.domain.entity.User;
 import com.demo.blog.domain.model.UserRequestDto;
 import com.demo.blog.domain.model.UserResponseDto;
-import com.demo.blog.exception.NoUserException;
 import com.demo.blog.repository.UserRepository;
 import com.demo.blog.security.JWTToken;
 import com.demo.blog.service.UserService;
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
         validateUser(token);
         String email = userRequestDto.getEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> {
-            new NoUserException("No User Email" + email);
+            new IllegalStateException("No User Email" + email);
             return null;
         });
 
@@ -60,7 +59,7 @@ public class UserServiceImpl implements UserService {
         boolean isValidated = JWTToken.validateToken(token);
 
         if(!isValidated){
-            throw new RuntimeException();
+            throw new RuntimeException("No Validated User");
         }
     }
 
