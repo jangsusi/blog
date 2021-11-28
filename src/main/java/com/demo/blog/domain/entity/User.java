@@ -3,10 +3,7 @@ package com.demo.blog.domain.entity;
 import com.demo.blog.domain.model.UserRequestDto;
 import com.demo.blog.domain.model.UserResponseDto;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,14 +28,21 @@ public class User extends BaseEntity {
 
     private String password;
 
-    @OneToMany(mappedBy = "following")
-    private List<FollowerFollowing> followings = new ArrayList<>();
+    @ManyToMany(mappedBy = "followers")
+    private List<User> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower")
-    private List<FollowerFollowing> followers = new ArrayList<>();
+//    @OneToMany(mappedBy = "follower")
+//    private List<FollowerFollowing> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<ArticleUser> articles = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name="user_relations",
+        joinColumns = @JoinColumn(name = "followed_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private List<User> followers = new ArrayList<>();
 
     public User(UserRequestDto userRequestDto, String token) {
         this.userName = userRequestDto.getUserName();
